@@ -19,6 +19,9 @@ public class DatacoreTests {
 	
 	@Before
 	public void setup() {
+		InMemoryDb.loadSql("/invTypes.sql");
+		InMemoryDb.loadSql("/invGroups.sql");
+		
 		Nexus nexus = Nexus.getInstance();
 		nexus.setDatacore(new TestDatacore());
 	}

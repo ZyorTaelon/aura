@@ -18,22 +18,24 @@ import com.aideronrobotics.aura.Datacore;
 import com.aideronrobotics.aura.Type;
 
 public class TestDatacore implements Datacore {
-
 	private Connection connection;
 	
     public TestDatacore() {
-        String url = "jdbc:mysql://127.0.0.1:3306/datacore";
-        String user = "root";
+        String url = "jdbc:hsqldb:mem:aura";
+        String user = "sa";
         String password = "";
-
         try {
+        	Class.forName("org.hsqldb.jdbcDriver");
         	connection = DriverManager.getConnection(url, user, password);
         } catch (SQLException e) {
         	System.out.println("Error issuing query. " + e.toString());
-        }
+        	e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+        	System.out.println("Error setting up in memory database." + e.toString());
+        	e.printStackTrace();
+		}
     }
     
-    @Override
     public Type getType(int typeID) {
     	try {
 			Statement stmt = connection.createStatement();
@@ -43,7 +45,7 @@ public class TestDatacore implements Datacore {
 					"portionSize,raceID,i.published,marketGroupID,g.categoryID " +
 					"FROM invTypes AS i LEFT JOIN invGroups AS g ON g.groupID = i.groupID " +
 					"WHERE typeID = " + typeID);
-			if (rs.first()) {
+			if (rs.next()) {
 				Type type = new Type();
 				type.setCapacity(rs.getFloat("capacity"));
 				type.setCategoryID(rs.getInt("categoryID"));
@@ -63,6 +65,7 @@ public class TestDatacore implements Datacore {
 			}
 		} catch (SQLException e) {
 			System.out.println("Error issuing query. " + e.toString());
+        	e.printStackTrace();
 		}
     	
     	return null;
