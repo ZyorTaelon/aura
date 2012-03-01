@@ -20,6 +20,12 @@
 			<timezone>+1</timezone>
 		</developer>
 	</developers>
+	<repositories>
+		<repository>
+			<id>eveapi</id>
+			<url>https://eveapi.googlecode.com/svn/artifacts/maven</url>
+		</repository>
+	</repositories>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<slf4j.version>1.6.1</slf4j.version>
@@ -27,9 +33,30 @@
 	</properties>
 	<dependencies>
 		<dependency>
+			<groupId>com.beimin</groupId>
+			<artifactId>eveapi</artifactId>
+			<version>5.0.0</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.slf4j</groupId>
+					<artifactId>slf4j-api</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<!--
+		The slf4j-api is set to scope test so the true Android app can depend on slf4j-android
+		which is natively supported by android.
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-android</artifactId>
+			<version>1.6.1-RC1</version>
+		</dependency> 
+		 -->
+		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
 			<version>${slf4j.version}</version>
+			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>junit</groupId>
@@ -50,27 +77,26 @@
 			<scope>test</scope>
 		</dependency>
 		<!-- http://www.slf4j.org/legacy.html for these "over" things -->
+		<!-- currently there's no need to include these bridges.
 		<dependency>
-			<!-- Modern replacement of commons-logging using SLF4J -->
 			<groupId>org.slf4j</groupId>
 			<artifactId>jcl-over-slf4j</artifactId>
 			<version>${slf4j.version}</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<!-- Provide Log4J for c3p0's MLog logging -->
 			<groupId>org.slf4j</groupId>
 			<artifactId>log4j-over-slf4j</artifactId>
 			<version>${slf4j.version}</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<!-- Redirect java.util.logging -->
 			<groupId>org.slf4j</groupId>
 			<artifactId>jul-to-slf4j</artifactId>
 			<version>${slf4j.version}</version>
 			<scope>test</scope>
 		</dependency>
+		 -->
 	</dependencies>
 	<build>
 		<plugins>
